@@ -1,6 +1,14 @@
+import AppRouter from "components/Router";
+import { useState } from "react"; 
+import { authService } from "fbase";
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
   return (
-    <div></div>
+  <>
+    <AppRouter isLoggedIn ={isLoggedIn} />
+    <footer>&copy; Firebase_WebTest {new Date().getFullYear()}</footer>
+  </>
   );
 }
 
