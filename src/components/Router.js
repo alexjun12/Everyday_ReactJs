@@ -2,17 +2,17 @@ import React from "react";
 import Auth from "routes/Auth";
 import Home from "routes/Home";
 import Profile from "routes/Profile";
+import Intro from "routes/Intro";
+import CreateAccount from "routes/CreateAccount";
 import {HashRouter as Router, Redirect, Route, Switch} from "react-router-dom"
-import Navigation from "components/Navigation";
 
 const AppRouter = ({isLoggedIn}) => {
     return (
         <Router>
-            {isLoggedIn && <Navigation />}
             <Switch>
                 {isLoggedIn ? (
                 <>
-                <Route exact path = "/">
+                <Route exact path = "/home">
                     <Home />
                 </Route>
                 <Route exact path = "/profile">
@@ -22,8 +22,14 @@ const AppRouter = ({isLoggedIn}) => {
                 ) : (
                 <>
                 <Route exact path = "/">
-                     <Auth /> 
-                </Route>               
+                     <Intro /> 
+                </Route>     
+                <Route exact path= "/auth">
+                    <Auth />    
+                </Route>       
+                <Route exact path= "/createAccount">
+                    <CreateAccount />    
+                </Route>     
                 </>
                 )}
             </Switch>
