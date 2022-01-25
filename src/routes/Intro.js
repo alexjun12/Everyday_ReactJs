@@ -6,7 +6,7 @@ function Intro() {
 
     return (
         <div>
-            <f1>EveryDay</f1>
+            <h1>EveryDay</h1>
             <Link to = "/createAccount" >
                 <button >Create Account</button>
             </Link>

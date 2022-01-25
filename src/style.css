@@ -1,0 +1,18 @@
+.calArray{
+    width : 140px;
+    height: 140px;
+    display: inline-block;
+    text-align: left;
+    line-height: 250px;
+}
+
+.calStyle{
+    width : 1000px;
+    height : 1000px;
+}
+
+.friendsBt{
+    width : 200px;
+    height: 200px;
+    border-radius: 50%;
+}
