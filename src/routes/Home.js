@@ -5,7 +5,6 @@ import "style.css";
 
 function Home(){    
     let date = new Date();
-    const [rendd,setRend] = useState(false);
     const prevLast = new Date(date.getFullYear(), date.getMonth(), 0);
     const thisLast = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     
@@ -20,7 +19,7 @@ function Home(){
 
     const friends = [];
     for(let i = 1; i < 8; i++){
-      friends.push(<button className="friendsBt">friend{i}</button>);
+      friends.push(<button className="friendsBt"></button>);
     }
 
     if (PLDay !== 6) {
@@ -41,21 +40,13 @@ function Home(){
       dates.forEach((date, i) => {
         dates[i] =  <DayCal day = {date}/>;
       })
-    const leftMonth = () => {
-      date.setMonth(date.getMonth() - 1);
-      console.log(date.getMonth());
-    }
-    const rightMonth = () => {
-      date.setMonth(date.getMonth() + 1);
-      console.log(date.getMonth());
-    }
     return(
         <div>
-            <h1 className="textCenter">EveryDay</h1>
+            <h1 className="mTitle">EveryDay</h1>
             <h2 className="textCenter">
-              <button onClick={leftMonth}>◀</button>
+              <button>◀</button>
               {date.getFullYear()}년{date.getMonth() + 1}월
-              <button onClick={rightMonth}>▶</button>
+              <button>▶</button>
             </h2>
             <Link to = "/profile">
                 <button>My Profile</button>

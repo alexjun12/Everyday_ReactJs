@@ -37,20 +37,20 @@ const Auth = () =>{
     const history = useHistory();
     authService.onAuthStateChanged((user) => {
         if(user){
-          history.push("/home");
+          history.push("/");
         }
     });
     return (
         <div>
-            <h1 className="textCenter">EveryDay</h1>
+            <h1 className="mTitle">EveryDay</h1>
             <form onSubmit={onSubmit}>
                 <input name = "email" type = "email" placeholder="Email" required value = {email} onChange={onChange} className="form__input"/>
                 <input name = "password" type = "password" placeholder="Password" required value = {password} onChange ={onChange} className="form__input"/>
-                <input type = "submit" value = "LogIn" />
+                <input type = "submit" value = "LogIn" className="confirmBT" />
             </form>
             <div>
-                <button onClick = {onSocialClick} name = "google">Continue with Google</button>
-                <button onClick = {onSocialClick} name = "github">Continue with Github</button>
+                <button onClick = {onSocialClick} name = "google" className="googleBt"></button>
+                <button onClick = {onSocialClick} name = "github" className="githubBt"></button>
             </div>
         </div>
     );

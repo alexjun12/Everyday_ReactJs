@@ -1,3 +1,4 @@
+
 .calArray{
     width : 100px;
     height: 100px;
@@ -20,11 +21,51 @@
     width : 100px;
     height: 100px;
     border-radius: 50%;
+    border-color: rgb(0, 140, 255);
+    background: url("/public/user.png") no-repeat;
+    background-size: contain;
 }
 
+.mTitle{
+    text-align: center;
+    font-family: 'Bradley Hand ITC',serif;
+    font-size: 80px;
+}
 .textCenter{
     text-align: center;
     font-family: 'Bradley Hand ITC',serif;
+}
+
+.confirmBT{
+  position: relative;
+  left: 1200px;
+  top: 200px;
+  height: 50px;
+  width: 100px;
+  background-color: black;
+  color: white;
+  font-family: 'Bradley Hand ITC',serif;
+}
+
+.googleBt{
+  position: relative;
+  top: 270px;
+  left: 780px;
+  height: 50px;
+  width: 50px;
+  background: url("/public/google.png") no-repeat;
+  background-size: contain;
+  border: 0;
+}
+.githubBt{
+  position: relative;
+  top: 270px;
+  left: 810px;
+  height: 50px;
+  width: 50px;
+  background: url("/public/github.png") no-repeat;
+  background-size: contain;
+  border: 0;
 }
 
 /* CSS */
@@ -91,7 +132,7 @@
 }
 
   .form__input {
-    top: 100px;
+    top: 300px;
     position: relative;
     font-family: 'Bradley Hand ITC', sans-serif;
     color: white;

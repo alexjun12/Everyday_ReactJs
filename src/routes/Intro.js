@@ -7,7 +7,7 @@ function Intro() {
 
     return (
         <div>
-            <h1 className="textCenter">EveryDay</h1>
+            <h1 className="mTitle">EveryDay</h1>
             <Link to = "/createAccount" >
                 <button className="button-55">Create Account</button>
             </Link>

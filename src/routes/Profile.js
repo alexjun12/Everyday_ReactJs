@@ -9,7 +9,10 @@ function Profile() {
         history.push("/");
     }
     return (
-        <button onClick={onLogOutClick}>Log Out</button>
+        <div>
+            <h1 className="mTitle">EveryDay</h1>
+            <button onClick={onLogOutClick}>Log Out</button>
+        </div>
     );
 }
 export default Profile;

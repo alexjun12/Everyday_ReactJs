@@ -12,7 +12,7 @@ const AppRouter = ({isLoggedIn}) => {
             <Switch>
                 {isLoggedIn ? (
                 <>
-                <Route exact path = "/home">
+                <Route exact path = "/">
                     <Home />
                 </Route>
                 <Route exact path = "/profile">
