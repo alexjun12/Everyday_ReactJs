@@ -1,6 +1,7 @@
 import { authService, firebaseInstance } from "fbase";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import "style.css";
 
 function CreateAccount() {
     const [email,setEmail] = useState(""); 
@@ -42,9 +43,10 @@ function CreateAccount() {
     });
     return (
         <div>
+            <h1 className="textCenter">EveryDay</h1>
             <form onSubmit={onSubmit}>
-                <input name = "email" type = "email" placeholder="Email" required value = {email} onChange={onChange} />
-                <input name = "password" type = "password" placeholder="Password" required value = {password} onChange ={onChange}/>
+                <input name = "email" type = "email" placeholder="Email" required value = {email} onChange={onChange} className="form__input"/>
+                <input name = "password" type = "password" placeholder="Password" required value = {password} onChange ={onChange} className="form__input"/>
                 <input type = "submit" value = "CreateAccount" />
             </form>
             <div>

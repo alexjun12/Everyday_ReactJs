@@ -1,6 +1,7 @@
 import AppRouter from "components/Router";
 import { useEffect, useState } from "react"; 
 import { authService } from "fbase";
+import "style.css";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -18,7 +19,6 @@ function App() {
   return (
   <>
     {init ? <AppRouter isLoggedIn ={isLoggedIn} /> : "Initializing..."}
-    <footer>&copy; Firebase_WebTest {new Date().getFullYear()}</footer>
   </>
   );
 }

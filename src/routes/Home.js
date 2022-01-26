@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {Link} from "react-router-dom";
 import DayCal from "components/DayCallendar";
 import "style.css";
 
 function Home(){    
-    const date = new Date();
+    let date = new Date();
+    const [rendd,setRend] = useState(false);
     const prevLast = new Date(date.getFullYear(), date.getMonth(), 0);
     const thisLast = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     
@@ -15,7 +16,12 @@ function Home(){
     
     const prevDates = [];
     const thisDates = [...Array(TLDate + 1).keys()].slice(1);
-    const nextDates = [];
+    const nextDates = []; 
+
+    const friends = [];
+    for(let i = 1; i < 8; i++){
+      friends.push(<button className="friendsBt">friend{i}</button>);
+    }
 
     if (PLDay !== 6) {
         for (let i = 0; i < PLDay + 1; i++) {
@@ -35,14 +41,28 @@ function Home(){
       dates.forEach((date, i) => {
         dates[i] =  <DayCal day = {date}/>;
       })
-
+    const leftMonth = () => {
+      date.setMonth(date.getMonth() - 1);
+      console.log(date.getMonth());
+    }
+    const rightMonth = () => {
+      date.setMonth(date.getMonth() + 1);
+      console.log(date.getMonth());
+    }
     return(
         <div>
-            <h1>EveryDay</h1>
-            <h2>{date.getFullYear()}년{date.getMonth() + 1}월</h2>
+            <h1 className="textCenter">EveryDay</h1>
+            <h2 className="textCenter">
+              <button onClick={leftMonth}>◀</button>
+              {date.getFullYear()}년{date.getMonth() + 1}월
+              <button onClick={rightMonth}>▶</button>
+            </h2>
             <Link to = "/profile">
                 <button>My Profile</button>
             </Link>
+            <div>
+              {friends}
+            </div>
             <div className="calStyle">
                 {dates}
             </div>
