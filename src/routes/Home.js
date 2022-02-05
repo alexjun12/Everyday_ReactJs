@@ -5,7 +5,7 @@ import "style.css";
 
 function Home(){    
     let date = new Date();
-
+  
     const friends = [];
     for(let i = 1; i < 8; i++){
       friends.push(<button className="friendsBt"></button>);
@@ -25,7 +25,9 @@ function Home(){
             <div>
               {friends}
             </div>
-            
+            <div>
+              <DayCal />
+            </div>
         </div>
     );
 }

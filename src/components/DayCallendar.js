@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
+import "react-datepicker/dist/react-datepicker.css";
 
 function DayCallendar({day}){
-    
+    const [startDate, setStartDate] = useState(new Date());
+
     return(
-    <button className = "calArray">Day{day}</button>    
+        <DatePicker locale = { ko } selected={startDate} onChange={(date) => setStartDate(date)} inline />
 );}
 
 export default DayCallendar;
