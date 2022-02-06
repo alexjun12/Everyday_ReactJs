@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-function DayCallendar({day}){
+import Modal from 'react-modal';
+
+//Modal.setAppElement('#cal');
+function DayCallendar(){
+  const [ModalIsOpen, setModalIsOpen] = useState(false);
+
     const events = [
         {
           id: 1,
@@ -19,9 +24,10 @@ function DayCallendar({day}){
           end: '2021-06-16T18:00:00',
         },
         { id: 3, title: 'event 3', start: '2021-06-17', end: '2021-06-20' },
-      ];
+    ];
 
     return(
+      <div>
         <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -31,15 +37,21 @@ function DayCallendar({day}){
         customButtons={{
             new: {
               text: 'new',
-              click: () => alert('new event'),
+              click: () => {},
             },
         }}
         events = {events}
         eventColor="red"
         nowIndicator
-        dateClick={(e) => console.log(e.dateStr)}
+        dateClick={(e) => setModalIsOpen(true)}
         eventClick={(e) => console.log(e.event.id)}
       />
+      <Modal 
+      isOpen = {ModalIsOpen}
+      onRequestClose = {() => setModalIsOpen(false)}
+      >
+      modal content</Modal>
+      </div>
 );}
 
 export default DayCallendar;

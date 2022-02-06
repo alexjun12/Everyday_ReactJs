@@ -6,7 +6,7 @@ import "style.css";
 function Home(){    
     const friends = [];
     for(let i = 1; i < 8; i++){
-      friends.push(<button className="friendsBt"></button>);
+      friends.push(<button className="friendsBt" key = {`fb ${i}`}></button>);
     }
 
     return(
