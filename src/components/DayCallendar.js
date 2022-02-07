@@ -10,9 +10,11 @@ function DayCallendar(){
   const localizer = momentLocalizer(moment);
   const [ModalIsOpen, setModalIsOpen] = useState(false);
   const [events,addEvent] = useState([]);
-  let getYear;
-  let getMonth;
-  let getDay;
+
+  const [getY, setY] = useState(0);
+  const [getMon,setMon] = useState(0);
+  const [getD,setD] = useState(0);
+
     const addSchedule = (sy,sm,sd) => {
         const sched = {
           id : 0,
@@ -22,6 +24,10 @@ function DayCallendar(){
           end: new Date(sy,sm,sd),
         };
         addEvent(events.concat(sched));
+    }
+    const getSubmits = (event) => {
+      console.log(event);
+      //event.preventDefault();
     }
     return(
       <div>
@@ -35,7 +41,9 @@ function DayCallendar(){
         selectable
         onSelectSlot = {(e) => {
           setModalIsOpen(true);
-          console.log(e.start.getUTCFullYear(),e.start.getMonth() + 1,e.start.getDate());
+          setY(e.start.getUTCFullYear());
+          setMon(e.start.getMonth());
+          setD(e.start.getDate());
         }}
         startAccessor="start"
         endAccessor="end"
@@ -55,7 +63,11 @@ function DayCallendar(){
         isOpen = {ModalIsOpen}
         onRequestClose = {() => setModalIsOpen(false)}
       >
-        <button onClick={() => addSchedule(2022,1,7)}>Add Schedule</button>
+        <form>
+          <input type = "text" placeholder='Add Your Schedule'/>
+          <input type="submit" onSubmit={getSubmits} />
+        </form>
+        <button onClick={() => addSchedule(getY,getMon,getD)}>Add Schedule</button>
       </Modal>
       </div>
 );}
