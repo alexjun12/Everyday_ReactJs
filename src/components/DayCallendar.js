@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment, { relativeTimeRounding } from 'moment';
+import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import Modal from 'react-modal';
@@ -11,6 +11,7 @@ function DayCallendar(){
   const [ModalIsOpen, setModalIsOpen] = useState(false);
   const [events,addEvent] = useState([]);
 
+  const [sctitle, setSctitle] = useState("");
   const [getY, setY] = useState(0);
   const [getMon,setMon] = useState(0);
   const [getD,setD] = useState(0);
@@ -18,16 +19,15 @@ function DayCallendar(){
     const addSchedule = (sy,sm,sd) => {
         const sched = {
           id : 0,
-          title : 'aasd',
+          title :  sctitle,
           allday : true,
           start : new Date(sy,sm,sd),
           end: new Date(sy,sm,sd),
         };
         addEvent(events.concat(sched));
     }
-    const getSubmits = (event) => {
-      console.log(event);
-      //event.preventDefault();
+    const onChange = (event) => {
+      setSctitle(event.target.value);
     }
     return(
       <div>
@@ -63,11 +63,11 @@ function DayCallendar(){
         isOpen = {ModalIsOpen}
         onRequestClose = {() => setModalIsOpen(false)}
       >
-        <form>
-          <input type = "text" placeholder='Add Your Schedule'/>
-          <input type="submit" onSubmit={getSubmits} />
+        <form onSubmit={(event) => {event.preventDefault();
+          addSchedule(getY,getMon,getD)}}>
+          <input type = "text" placeholder='Add Your Schedule' required onChange = {onChange} />
+          <input type="submit" value = "Add Schedule" />
         </form>
-        <button onClick={() => addSchedule(getY,getMon,getD)}>Add Schedule</button>
       </Modal>
       </div>
 );}
