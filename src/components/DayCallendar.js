@@ -11,6 +11,9 @@ function DayCallendar(){
   const [ModalIsOpen, setModalIsOpen] = useState(false);
   const [events,addEvent] = useState([]);
 
+  const [modalState, setModalState] = useState(false); // false->add / true->delete
+  const [selectedEv, setSelectedEv] = useState([]); // event to delete or edit
+
   const [sctitle, setSctitle] = useState("");
   const [getY, setY] = useState(0);
   const [getMon,setMon] = useState(0);
@@ -29,6 +32,13 @@ function DayCallendar(){
     const onChange = (event) => {
       setSctitle(event.target.value);
     }
+    const deleteSchedule = (e) => {
+      for(let i = 0; i < events.length; i++){
+        if(events[i].title === e.title){
+          events.splice(i,1);
+        }
+      }
+    }
     return(
       <div>
       <Calendar
@@ -41,9 +51,15 @@ function DayCallendar(){
         selectable
         onSelectSlot = {(e) => {
           setModalIsOpen(true);
+          setModalState(false);
           setY(e.start.getUTCFullYear());
           setMon(e.start.getMonth());
           setD(e.start.getDate());
+        }}
+        onSelectEvent = {(e) => {
+          setModalIsOpen(true);
+          setModalState(true);
+          setSelectedEv(e);
         }}
         startAccessor="start"
         endAccessor="end"
@@ -62,12 +78,16 @@ function DayCallendar(){
         }}
         isOpen = {ModalIsOpen}
         onRequestClose = {() => setModalIsOpen(false)}
-      >
+      >{modalState ? 
+        <div>
+          <button onClick={deleteSchedule(selectedEv)}>{console.log("del?")}Delete!!</button>
+        </div> :
         <form onSubmit={(event) => {event.preventDefault();
           addSchedule(getY,getMon,getD)}}>
           <input type = "text" placeholder='Add Your Schedule' required onChange = {onChange} />
           <input type="submit" value = "Add Schedule" />
         </form>
+        }
       </Modal>
       </div>
 );}
