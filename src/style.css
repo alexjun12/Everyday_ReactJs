@@ -28,7 +28,7 @@
 
 .mTitle{
     text-align: center;
-    font-family: 'Bradley Hand ITC',serif;
+    font-family: 'Dongle',serif;
     font-size: 80px;
 }
 .textCenter{
@@ -38,18 +38,19 @@
 
 .confirmBT{
   position: relative;
-  left: 1200px;
-  top: 200px;
+  left: 1100px;
+  top: 10px;
   height: 50px;
   width: 100px;
   background-color: black;
-  color: white;
-  font-family: 'Bradley Hand ITC',serif;
+  color: grey;
+  font-family: 'Dongle',serif;
+  border-radius: 10%;
 }
 
 .googleBt{
   position: relative;
-  top: 270px;
+  top: 120px;
   left: 780px;
   height: 50px;
   width: 50px;
@@ -59,7 +60,7 @@
 }
 .githubBt{
   position: relative;
-  top: 270px;
+  top: 120px;
   left: 810px;
   height: 50px;
   width: 50px;
@@ -70,10 +71,10 @@
 
 /* CSS */
 .button-55 {
-    font-family: 'Bradley Hand ITC',serif;
+    font-family: 'Dongle',serif;
     position: relative;
-    top: 700px;
-    left: 645px;
+    top: 150px;
+    left: 43%;
     align-items: center;
     background-color:white;
     border: 2px solid #111;
@@ -81,9 +82,9 @@
     box-sizing: border-box;
     color: #111;
     cursor: pointer;
-    display:inline-block;
+    display: block;
     font-size: 18px;
-    width: 200px;
+    width: 250px;
     height: 48px;
     justify-content: center;
     line-height: 24px;
@@ -95,6 +96,7 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    margin-top: 30px;
 }
 
 .button-55:after {
@@ -132,9 +134,9 @@
 }
 
   .form__input {
-    top: 300px;
+    top: 130px;
     position: relative;
-    font-family: 'Bradley Hand ITC', sans-serif;
+    font-family: 'Dongle', sans-serif;
     color: white;
     font-size: 1.2rem;
     margin: 0 auto;
@@ -142,10 +144,14 @@
     border-radius: 8px;
     background-color: black;
     border: none;
-    width: 30%;
+    width: 20%;
     display: flex;
     border-bottom: 0.3rem solid transparent;
     transition: all 0.3s;
     justify-content:space-between;
+    margin-top: 30px;
   }
   
+  .calPos{
+    justify-content: center; 
+  }

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import {Link} from "react-router-dom";
 import DayCal from "components/DayCallendar";
 import "style.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRobot } from "@fortawesome/free-solid-svg-icons";
 
 function Home(){    
     const friends = [];
@@ -13,7 +15,7 @@ function Home(){
         <div>
             <h1 className="mTitle">EveryDay</h1>
             <Link to = "/profile">
-                <button>My Profile</button>
+              <FontAwesomeIcon icon= {faRobot} size="3x" color = "black"/>
             </Link>
             <div>
               {friends}

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 import Modal from 'react-modal';
+import ReactDatePicker from 'react-datepicker';
 
 function DayCallendar(){
   moment.locale('ko-KR');
@@ -15,55 +17,63 @@ function DayCallendar(){
   const [selectedEv, setSelectedEv] = useState(""); // event to delete or edit
 
   const [sctitle, setSctitle] = useState("");
-  const [getY, setY] = useState(0);
-  const [getMon,setMon] = useState(0);
-  const [getD,setD] = useState(0);
 
-    const addSchedule = (sy,sm,sd) => {
+  const [startD, setStartDate] = useState(new Date(0,0,0));
+  const [endD, setEndDate] = useState(new Date(0,0,0));
+  const [dateClicked, setDateClicked] = useState(true);
+
+  const nextId = useRef(1);
+
+    const addSchedule = () => {
+        const cD = moment(endD);
+        const neD = cD.clone().add(1,'days');
         const sched = {
-          id : 0,
+          id : nextId.current,
           title :  sctitle,
           allday : true,
-          start : new Date(sy,sm,sd),
-          end: new Date(sy,sm,sd),
+          start : startD,
+          end: neD,
         };
         addEvent(events.concat(sched));
+        nextId.current += 1;
     }
     const onChange = (event) => {
       setSctitle(event.target.value);
     }
     const deleteSchedule = (e) => { 
-      for(let i = 0; i < events.length; i++){
-        if(events[i].title === e){
-          events.splice(i,1);
-        }
-      }
+      addEvent(events.filter((par) => par.title !== e.title));
+    }
+    const editSDay = (d) => {
+      setStartDate(d);
+      addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, start : d} : sched));
+    }
+    const editEDay = (d) => {
+      const cD = moment(d);
+      const neD = cD.clone().add(1,'days');
+      setEndDate(d);
+      addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
     }
     return(
       <div>
       <Calendar
+        className='calPos'
         localizer={localizer}
         events={events}
-        style = {{
-          height : 1000,
-          width : 1000,
-        }}
         selectable
-        onSelectSlot = {(e) => {
+        onSelectSlot = {dateClicked ? (e) => {          
+          setDateClicked(false);
+          setStartDate(e.start);
+        } : (e) => {
           setModalIsOpen(true);
           setModalState(false);
-          setY(e.start.getUTCFullYear());
-          setMon(e.start.getMonth());
-          setD(e.start.getDate());
+          setDateClicked(true);
+          setEndDate(e.start); 
         }}
         onSelectEvent = {(e) => {
           setModalIsOpen(true);
           setModalState(true);
-          setSelectedEv(e.title);
-          console.log(selectedEv);
+          setSelectedEv(e);
         }}
-        startAccessor="start"
-        endAccessor="end"
       />
       <Modal 
         style = {{
@@ -82,9 +92,13 @@ function DayCallendar(){
       >{modalState ? 
         <div>
           <button onClick={() => deleteSchedule(selectedEv)}>Delete!!</button>
+          <form>
+            <ReactDatePicker onChange = {(date) => editSDay(date)} selected = {startD} dateFormat = "yyyy년 MM월 dd일"/>
+            <ReactDatePicker onChange = {(date) => editEDay(date)} selected = {endD} dateFormat = "yyyy년 MM월 dd일"/>
+          </form>
         </div> :
         <form onSubmit={(event) => {event.preventDefault();
-          addSchedule(getY,getMon,getD)}}>
+          addSchedule()}}>
           <input type = "text" placeholder='Add Your Schedule' required onChange = {onChange} />
           <input type="submit" value = "Add Schedule" />
         </form>
