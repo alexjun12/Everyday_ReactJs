@@ -12,7 +12,7 @@ function DayCallendar(){
   const [events,addEvent] = useState([]);
 
   const [modalState, setModalState] = useState(false); // false->add / true->delete
-  const [selectedEv, setSelectedEv] = useState([]); // event to delete or edit
+  const [selectedEv, setSelectedEv] = useState(""); // event to delete or edit
 
   const [sctitle, setSctitle] = useState("");
   const [getY, setY] = useState(0);
@@ -32,9 +32,9 @@ function DayCallendar(){
     const onChange = (event) => {
       setSctitle(event.target.value);
     }
-    const deleteSchedule = (e) => {
+    const deleteSchedule = (e) => { 
       for(let i = 0; i < events.length; i++){
-        if(events[i].title === e.title){
+        if(events[i].title === e){
           events.splice(i,1);
         }
       }
@@ -59,7 +59,8 @@ function DayCallendar(){
         onSelectEvent = {(e) => {
           setModalIsOpen(true);
           setModalState(true);
-          setSelectedEv(e);
+          setSelectedEv(e.title);
+          console.log(selectedEv);
         }}
         startAccessor="start"
         endAccessor="end"
@@ -80,7 +81,7 @@ function DayCallendar(){
         onRequestClose = {() => setModalIsOpen(false)}
       >{modalState ? 
         <div>
-          <button onClick={deleteSchedule(selectedEv)}>{console.log("del?")}Delete!!</button>
+          <button onClick={() => deleteSchedule(selectedEv)}>Delete!!</button>
         </div> :
         <form onSubmit={(event) => {event.preventDefault();
           addSchedule(getY,getMon,getD)}}>
