@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import "react-datepicker/dist/react-datepicker.css";
+import "style.css";
 
 import Modal from 'react-modal';
 import ReactDatePicker from 'react-datepicker';
@@ -54,9 +55,9 @@ function DayCallendar(){
       addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
     }
     return(
-      <div>
-      <Calendar
-        className='calPos'
+      <div className='calBorder'>
+      <Calendar    
+        className='calDes'
         localizer={localizer}
         events={events}
         selectable

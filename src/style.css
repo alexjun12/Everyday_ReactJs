@@ -17,13 +17,14 @@
 
 .friendsBt{
     position: relative;
-    left: 100px;
+    left: 300px;
     width : 100px;
     height: 100px;
     border-radius: 50%;
     border-color: rgb(0, 140, 255);
     background: url("/public/user.png") no-repeat;
     background-size: contain;
+    margin-right: 3%;
 }
 
 .mTitle{
@@ -152,6 +153,12 @@
     margin-top: 30px;
   }
   
-  .calPos{
-    justify-content: center; 
+  .calBorder{
+    height: 500px;
+    width : 1000px;  
+  }
+  .calDes{
+    position: relative;
+    left : 300px;
+    background-color: white;
   }
