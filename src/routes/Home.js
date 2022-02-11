@@ -14,15 +14,15 @@ function Home(){
     return(
         <div>
             <h1 className="mTitle">EveryDay</h1>
-            <Link to = "/profile">
-              <FontAwesomeIcon icon= {faRobot} size="3x" color = "black"/>
-            </Link>
             <div>
               {friends}
             </div>
             <div>
               <DayCal />
             </div>
+            <Link to = "/profile">
+              <FontAwesomeIcon icon= {faRobot} size="3x" color = "black"/>
+            </Link>
         </div>
     );
 }

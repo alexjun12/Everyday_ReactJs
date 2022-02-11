@@ -83,8 +83,8 @@ function DayCallendar(){
             zIndex : 4,
           },
           content : {
-            height : 800,
-            width : 500,
+            height : 300,
+            width : 300,
             left : 1100,
           }   
         }}
