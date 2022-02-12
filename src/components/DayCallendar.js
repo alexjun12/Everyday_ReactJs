@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+import { dbService } from 'fbase';
+import moment, { now } from 'moment';
 import 'calEdit.css';
 import "react-datepicker/dist/react-datepicker.css";
 import "style.css";
@@ -25,7 +26,7 @@ function DayCallendar(){
 
   const nextId = useRef(1);
 
-    const addSchedule = () => {
+    const addSchedule = async () => {
         const cD = moment(endD);
         const neD = cD.clone().add(1,'days');
         const sched = {
@@ -37,12 +38,17 @@ function DayCallendar(){
         };
         addEvent(events.concat(sched));
         nextId.current += 1;
+        await dbService.collection("events").add({
+          
+        })
+        setModalIsOpen(false);
     }
     const onChange = (event) => {
       setSctitle(event.target.value);
     }
     const deleteSchedule = (e) => { 
       addEvent(events.filter((par) => par.title !== e.title));
+      setModalIsOpen(false);
     }
     const editSDay = (d) => {
       setStartDate(d);
