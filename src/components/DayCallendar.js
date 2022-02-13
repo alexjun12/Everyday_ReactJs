@@ -34,12 +34,15 @@ function DayCallendar(){
           title :  sctitle,
           allday : true,
           start : startD,
-          end: neD,
+          end : neD,
         };
         addEvent(events.concat(sched));
         nextId.current += 1;
         await dbService.collection("events").add({
-          
+          id : sched.id,
+          title : sched.title,
+          start : sched.start,
+          end: new Date(neD),
         })
         setModalIsOpen(false);
     }
