@@ -36,15 +36,14 @@ function DayCallendar(){
         end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
         dbId : document.id,
       }
-      //console.log(events);
       addEvent((prev) => [gotDbEv, ...prev]);
     });
   };
   useEffect(() => {
     getMyCal();
-  },[]);
+  },[events]);
 
-    const addSchedule = () => {
+    const addSchedule = async () => {
         const cD = moment(endD);
         const neD = cD.clone().add(1,'days');
         const sched = {
@@ -56,7 +55,7 @@ function DayCallendar(){
         };
         addEvent(events.concat(sched));
         nextId.current += 1;
-        dbService.collection("events").add({
+        await dbService.collection("events").add({
           id : sched.id,
           title : sched.title,
           start : sched.start,
@@ -67,20 +66,26 @@ function DayCallendar(){
     const onChange = (event) => {
       setSctitle(event.target.value);
     }
-    const deleteSchedule = (e) => { 
+    const deleteSchedule = async (e) => { 
       addEvent(events.filter((par) => par.id !== e.id));
-      dbService.doc(`events/${e.dbId}`).delete();
+      await dbService.doc(`events/${e.dbId}`).delete();
       setModalIsOpen(false);
     }
-    const editSDay = (d) => {
+    const editSDay = async (d) => {
       setStartDate(d);
       addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, start : d} : sched));
+      await dbService.doc(`events/${selectedEv.dbId}`).update({
+        start : d
+      });
     }
-    const editEDay = (d) => {
+    const editEDay = async (d) => {
       const cD = moment(d);
       const neD = cD.clone().add(1,'days');
-      setEndDate(d);
+      setEndDate(new Date(neD));
       addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
+      await dbService.doc(`events/${selectedEv.dbId}`).update({
+        end : new Date(neD)
+      });
     }
     return(
       <div className='calBorder'>
@@ -102,7 +107,6 @@ function DayCallendar(){
           setModalIsOpen(true);
           setModalState(true);
           setSelectedEv(e);
-          console.log(e);
         }}
       />
       <Modal 
