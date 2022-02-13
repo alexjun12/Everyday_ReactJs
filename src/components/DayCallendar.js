@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { dbService } from 'fbase';
 import moment, { now } from 'moment';
@@ -26,7 +26,25 @@ function DayCallendar(){
 
   const nextId = useRef(1);
 
-    const addSchedule = async () => {
+  const getMyCal = async () => {
+    const dbEvents = await dbService.collection("events").get();
+    dbEvents.forEach(document => {
+      const gotDbEv = {
+        id : document.data().id,
+        title : document.data().title,
+        start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
+        end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
+        dbId : document.id,
+      }
+      //console.log(events);
+      addEvent((prev) => [gotDbEv, ...prev]);
+    });
+  };
+  useEffect(() => {
+    getMyCal();
+  },[]);
+
+    const addSchedule = () => {
         const cD = moment(endD);
         const neD = cD.clone().add(1,'days');
         const sched = {
@@ -38,7 +56,7 @@ function DayCallendar(){
         };
         addEvent(events.concat(sched));
         nextId.current += 1;
-        await dbService.collection("events").add({
+        dbService.collection("events").add({
           id : sched.id,
           title : sched.title,
           start : sched.start,
@@ -50,7 +68,8 @@ function DayCallendar(){
       setSctitle(event.target.value);
     }
     const deleteSchedule = (e) => { 
-      addEvent(events.filter((par) => par.title !== e.title));
+      addEvent(events.filter((par) => par.id !== e.id));
+      dbService.doc(`events/${e.dbId}`).delete();
       setModalIsOpen(false);
     }
     const editSDay = (d) => {
@@ -83,6 +102,7 @@ function DayCallendar(){
           setModalIsOpen(true);
           setModalState(true);
           setSelectedEv(e);
+          console.log(e);
         }}
       />
       <Modal 
@@ -103,8 +123,8 @@ function DayCallendar(){
         <div>
           <button onClick={() => deleteSchedule(selectedEv)}>Delete!!</button>
           <form>
-            <ReactDatePicker onChange = {(date) => editSDay(date)} selected = {startD} dateFormat = "yyyy년 MM월 dd일"/>
-            <ReactDatePicker onChange = {(date) => editEDay(date)} selected = {endD} dateFormat = "yyyy년 MM월 dd일"/>
+            <ReactDatePicker onChange = {(date) => editSDay(date)} selected = {new Date(selectedEv.start)} dateFormat = "yyyy년 MM월 dd일"/>
+            <ReactDatePicker onChange = {(date) => editEDay(date)} selected = {new Date(selectedEv.end)} dateFormat = "yyyy년 MM월 dd일"/>
           </form>
         </div> :
         <form onSubmit={(event) => {event.preventDefault();
