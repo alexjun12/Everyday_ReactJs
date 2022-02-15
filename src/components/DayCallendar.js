@@ -24,9 +24,12 @@ function DayCallendar({clientId}){
   const [endD, setEndDate] = useState(new Date(0,0,0));
   const [dateClicked, setDateClicked] = useState(true);
 
-  const nextId = useRef(1);
+  const [evChanged, setEvChanged] = useState(false);
+
+  const [nextId, setNextId] = useState(new Date().getMilliseconds());
 
   const getMyCal = async () => {
+    addEvent([]);
     const dbEvents = await dbService.collection(clientId.uid).get();
     dbEvents.forEach(document => {
       const gotDbEv = {
@@ -41,26 +44,24 @@ function DayCallendar({clientId}){
   };
   useEffect(() => {
     getMyCal();
-  },[events]);
+  },[evChanged]);
 
   const addSchedule = async () => {
       const cD = moment(endD);
       const neD = cD.clone().add(1,'days');
-      const sched = {
-        id : nextId.current,
-        title :  sctitle,
-        allday : true,
+      const addEvs = {
+        id : nextId,
+        title : sctitle,
         start : startD,
-        end : neD,
-      };
-      addEvent(events.concat(sched));
-      nextId.current += 1;
-      await dbService.collection(clientId.uid).add({
-        id : sched.id,
-        title : sched.title,
-        start : sched.start,
         end: new Date(neD),
-      })
+      };
+      await dbService.collection(clientId.uid).add(addEvs);
+      setNextId(new Date().getMilliseconds());
+      if(evChanged === false){
+        setEvChanged(true);
+      }else{
+        setEvChanged(false);
+      }
       setModalIsOpen(false);
   }
   const onChange = (event) => {
