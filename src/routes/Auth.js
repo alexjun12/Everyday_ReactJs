@@ -8,8 +8,6 @@ const Auth = () =>{
     const [email,setEmail] = useState(""); 
     const [password,setPassword] = useState(""); 
 
-    const [clientId, setClientId] = useState(0);
-
     const onChange = (event) => {
         const {target: {name,value}} = event;
         if(name === "email"){
