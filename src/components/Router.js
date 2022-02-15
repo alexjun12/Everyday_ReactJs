@@ -6,14 +6,14 @@ import Intro from "routes/Intro";
 import CreateAccount from "routes/CreateAccount";
 import {HashRouter as Router, Redirect, Route, Switch} from "react-router-dom"
 
-const AppRouter = ({isLoggedIn}) => {
+const AppRouter = ({isLoggedIn, clientId}) => {
     return (
         <Router>
             <Switch>
                 {isLoggedIn ? (
                 <>
                 <Route exact path = "/">
-                    <Home />
+                    <Home clientId = {clientId}/>
                 </Route>
                 <Route exact path = "/profile">
                     <Profile />

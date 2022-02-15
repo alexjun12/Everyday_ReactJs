@@ -5,7 +5,7 @@ import "style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
 
-function Home(){    
+function Home({clientId}){    
     const friends = [];
     for(let i = 1; i < 8; i++){
       friends.push(<button className="friendsBt" key = {`fb ${i}`}></button>);
@@ -18,7 +18,7 @@ function Home(){
               {friends}
             </div>
             <div>
-              <DayCal />
+              <DayCal clientId = {clientId}/>
             </div>
             <Link to = "/profile">
               <FontAwesomeIcon icon= {faRobot} size="3x" color = "black"/>

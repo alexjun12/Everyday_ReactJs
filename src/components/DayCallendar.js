@@ -9,7 +9,7 @@ import "style.css";
 import Modal from 'react-modal';
 import ReactDatePicker from 'react-datepicker';
 
-function DayCallendar(){
+function DayCallendar({clientId}){
   moment.locale('ko-KR');
   const localizer = momentLocalizer(moment);
   const [ModalIsOpen, setModalIsOpen] = useState(false);
@@ -35,6 +35,7 @@ function DayCallendar(){
         start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
         end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
         dbId : document.id,
+        clientId : clientId.uid,
       }
       addEvent((prev) => [gotDbEv, ...prev]);
     });
@@ -43,102 +44,102 @@ function DayCallendar(){
     getMyCal();
   },[events]);
 
-    const addSchedule = async () => {
-        const cD = moment(endD);
-        const neD = cD.clone().add(1,'days');
-        const sched = {
-          id : nextId.current,
-          title :  sctitle,
-          allday : true,
-          start : startD,
-          end : neD,
-        };
-        addEvent(events.concat(sched));
-        nextId.current += 1;
-        await dbService.collection("events").add({
-          id : sched.id,
-          title : sched.title,
-          start : sched.start,
-          end: new Date(neD),
-        })
-        setModalIsOpen(false);
-    }
-    const onChange = (event) => {
-      setSctitle(event.target.value);
-    }
-    const deleteSchedule = async (e) => { 
-      addEvent(events.filter((par) => par.id !== e.id));
-      await dbService.doc(`events/${e.dbId}`).delete();
-      setModalIsOpen(false);
-    }
-    const editSDay = async (d) => {
-      setStartDate(d);
-      addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, start : d} : sched));
-      await dbService.doc(`events/${selectedEv.dbId}`).update({
-        start : d
-      });
-    }
-    const editEDay = async (d) => {
-      const cD = moment(d);
+  const addSchedule = async () => {
+      const cD = moment(endD);
       const neD = cD.clone().add(1,'days');
-      setEndDate(new Date(neD));
-      addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
-      await dbService.doc(`events/${selectedEv.dbId}`).update({
-        end : new Date(neD)
-      });
-    }
-    return(
-      <div className='calBorder'>
-      <Calendar    
-        className='calDes'
-        localizer={localizer}
-        events={events}
-        selectable
-        onSelectSlot = {dateClicked ? (e) => {          
-          setDateClicked(false);
-          setStartDate(e.start);
-        } : (e) => {
-          setModalIsOpen(true);
-          setModalState(false);
-          setDateClicked(true);
-          setEndDate(e.start); 
-        }}
-        onSelectEvent = {(e) => {
-          setModalIsOpen(true);
-          setModalState(true);
-          setSelectedEv(e);
-        }}
-      />
-      <Modal 
-        style = {{
-          overlay : {
-            backgroundColor : "rgba(0,0,0,0.3)",
-            zIndex : 4,
-          },
-          content : {
-            height : 300,
-            width : 300,
-            left : 1100,
-          }   
-        }}
-        isOpen = {ModalIsOpen}
-        onRequestClose = {() => setModalIsOpen(false)}
-      >{modalState ? 
-        <div>
-          <button onClick={() => deleteSchedule(selectedEv)}>Delete!!</button>
-          <form>
-            <ReactDatePicker onChange = {(date) => editSDay(date)} selected = {new Date(selectedEv.start)} dateFormat = "yyyy년 MM월 dd일"/>
-            <ReactDatePicker onChange = {(date) => editEDay(date)} selected = {new Date(selectedEv.end)} dateFormat = "yyyy년 MM월 dd일"/>
-          </form>
-        </div> :
-        <form onSubmit={(event) => {event.preventDefault();
-          addSchedule()}}>
-          <input type = "text" placeholder='Add Your Schedule' required onChange = {onChange} />
-          <input type="submit" value = "Add Schedule" />
+      const sched = {
+        id : nextId.current,
+        title :  sctitle,
+        allday : true,
+        start : startD,
+        end : neD,
+      };
+      addEvent(events.concat(sched));
+      nextId.current += 1;
+      await dbService.collection("events").add({
+        id : sched.id,
+        title : sched.title,
+        start : sched.start,
+        end: new Date(neD),
+      })
+      setModalIsOpen(false);
+  }
+  const onChange = (event) => {
+    setSctitle(event.target.value);
+  }
+  const deleteSchedule = async (e) => { 
+    addEvent(events.filter((par) => par.id !== e.id));
+    await dbService.doc(`events/${e.dbId}`).delete();
+    setModalIsOpen(false);
+  }
+  const editSDay = async (d) => {
+    setStartDate(d);
+    addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, start : d} : sched));
+    await dbService.doc(`events/${selectedEv.dbId}`).update({
+      start : d
+    });
+  }
+  const editEDay = async (d) => {
+    const cD = moment(d);
+    const neD = cD.clone().add(1,'days');
+    setEndDate(new Date(neD));
+    addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
+    await dbService.doc(`events/${selectedEv.dbId}`).update({
+      end : new Date(neD)
+    });
+  }
+  return(
+    <div className='calBorder'>
+    <Calendar    
+      className='calDes'
+      localizer={localizer}
+      events={events}
+      selectable
+      onSelectSlot = {dateClicked ? (e) => {          
+        setDateClicked(false);
+        setStartDate(e.start);
+      } : (e) => {
+        setModalIsOpen(true);
+        setModalState(false);
+        setDateClicked(true);
+        setEndDate(e.start); 
+      }}
+      onSelectEvent = {(e) => {
+        setModalIsOpen(true);
+        setModalState(true);
+        setSelectedEv(e);
+      }}
+    />
+    <Modal 
+      style = {{
+        overlay : {
+        backgroundColor : "rgba(0,0,0,0.3)",
+        zIndex : 4,
+      },
+        content : {
+        height : 300,
+        width : 300,
+        left : 1100,
+      }     
+    }}
+    isOpen = {ModalIsOpen}
+    onRequestClose = {() => setModalIsOpen(false)}
+    >{modalState ? 
+      <div>
+        <button onClick={() => deleteSchedule(selectedEv)}>Delete!!</button>
+        <form>
+          <ReactDatePicker onChange = {(date) => editSDay(date)} selected = {new Date(selectedEv.start)} dateFormat = "yyyy년 MM월 dd일"/>
+          <ReactDatePicker onChange = {(date) => editEDay(date)} selected = {new Date(selectedEv.end)} dateFormat = "yyyy년 MM월 dd일"/>
         </form>
-        }
-      </Modal>
-      </div>
+      </div> :
+      <form onSubmit={(event) => {event.preventDefault();
+        addSchedule()}}>
+        <input type = "text" placeholder='Add Your Schedule' required onChange = {onChange} />
+        <input type="submit" value = "Add Schedule" />
+      </form>
+      }
+    </Modal>
+    </div>
 );}
 
 export default DayCallendar;
