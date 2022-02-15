@@ -38,7 +38,6 @@ const Auth = () =>{
     const history = useHistory();
     authService.onAuthStateChanged((user) => {
         if(user){
-          setClientId(user.uid);
           history.push("/");
         }
     });
