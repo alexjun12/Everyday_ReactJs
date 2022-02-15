@@ -27,7 +27,7 @@ function DayCallendar({clientId}){
   const nextId = useRef(1);
 
   const getMyCal = async () => {
-    const dbEvents = await dbService.collection("events").get();
+    const dbEvents = await dbService.collection(clientId.uid).get();
     dbEvents.forEach(document => {
       const gotDbEv = {
         id : document.data().id,
@@ -35,7 +35,6 @@ function DayCallendar({clientId}){
         start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
         end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
         dbId : document.id,
-        clientId : clientId.uid,
       }
       addEvent((prev) => [gotDbEv, ...prev]);
     });
@@ -56,7 +55,7 @@ function DayCallendar({clientId}){
       };
       addEvent(events.concat(sched));
       nextId.current += 1;
-      await dbService.collection("events").add({
+      await dbService.collection(clientId.uid).add({
         id : sched.id,
         title : sched.title,
         start : sched.start,
@@ -69,13 +68,13 @@ function DayCallendar({clientId}){
   }
   const deleteSchedule = async (e) => { 
     addEvent(events.filter((par) => par.id !== e.id));
-    await dbService.doc(`events/${e.dbId}`).delete();
+    await dbService.doc(`${clientId.uid}/${e.dbId}`).delete();
     setModalIsOpen(false);
   }
   const editSDay = async (d) => {
     setStartDate(d);
     addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, start : d} : sched));
-    await dbService.doc(`events/${selectedEv.dbId}`).update({
+    await dbService.doc(`${clientId.uid}/${selectedEv.dbId}`).update({
       start : d
     });
   }
@@ -84,7 +83,7 @@ function DayCallendar({clientId}){
     const neD = cD.clone().add(1,'days');
     setEndDate(new Date(neD));
     addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
-    await dbService.doc(`events/${selectedEv.dbId}`).update({
+    await dbService.doc(`${clientId.uid}/${selectedEv.dbId}`).update({
       end : new Date(neD)
     });
   }
