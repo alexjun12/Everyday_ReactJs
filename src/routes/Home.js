@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom";
-import DayCal from "components/DayCallendar";
 import "style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
@@ -17,9 +16,8 @@ function Home({clientId}){
               {friends}
             </div>
             <div>
-              <DayCal clientId = {clientId}/>
             </div>
-            <Link to = "/profile">
+            <Link to = "/profile" clientId = {clientId}>
               <FontAwesomeIcon icon= {faRobot} size="3x" color = "black"/>
             </Link>
         </div>
