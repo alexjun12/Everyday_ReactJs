@@ -2,7 +2,6 @@ import { authService, firebaseInstance } from "fbase";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import "style.css";
-import Home from "routes/Home";
 
 const Auth = () =>{
     const [email,setEmail] = useState(""); 
@@ -38,7 +37,7 @@ const Auth = () =>{
     const history = useHistory();
     authService.onAuthStateChanged((user) => {
         if(user){
-          history.push("/");
+          history.push("/profile");
         }
     });
     return (

@@ -38,7 +38,7 @@ function CreateAccount() {
     const history = useHistory();
     authService.onAuthStateChanged((user) => {
         if(user){
-          history.push("/");
+          history.push("/profile");
         }
     });
     return (
