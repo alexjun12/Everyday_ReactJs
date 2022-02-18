@@ -30,7 +30,7 @@ function DayCallendar({clientId}){
 
   const getMyCal = async () => {
     addEvent([]);
-    const dbEvents = await dbService.collection(clientId.uid).get();
+    const dbEvents = await dbService.collection(clientId).get();
     dbEvents.forEach(document => {
         if(document.id.substring(0,5) === "event"){
         const gotDbEv = {
@@ -43,7 +43,7 @@ function DayCallendar({clientId}){
         addEvent((prev) => [gotDbEv, ...prev]);
       }
     });
-  };
+  }
   useEffect(() => {
     getMyCal();
   },[evChanged]);
@@ -57,7 +57,7 @@ function DayCallendar({clientId}){
         start : startD,
         end: new Date(neD),
       };
-      await dbService.collection(clientId.uid).doc(`event${nextId}`).set(addEvs);
+      await dbService.collection(clientId).doc(`event${nextId}`).set(addEvs);
       setNextId(new Date().getMilliseconds());
       if(evChanged === false){
         setEvChanged(true);
@@ -71,13 +71,13 @@ function DayCallendar({clientId}){
   }
   const deleteSchedule = async (e) => { 
     addEvent(events.filter((par) => par.id !== e.id));
-    await dbService.doc(`${clientId.uid}/${e.dbId}`).delete();
+    await dbService.doc(`${clientId}/${e.dbId}`).delete();
     setModalIsOpen(false);
   }
   const editSDay = async (d) => {
     setStartDate(d);
     addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, start : d} : sched));
-    await dbService.doc(`${clientId.uid}/${selectedEv.dbId}`).update({
+    await dbService.doc(`${clientId}/${selectedEv.dbId}`).update({
       start : d
     });
   }
@@ -86,7 +86,7 @@ function DayCallendar({clientId}){
     const neD = cD.clone().add(1,'days');
     setEndDate(new Date(neD));
     addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
-    await dbService.doc(`${clientId.uid}/${selectedEv.dbId}`).update({
+    await dbService.doc(`${clientId}/${selectedEv.dbId}`).update({
       end : new Date(neD)
     });
   }

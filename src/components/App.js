@@ -7,12 +7,13 @@ function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [clientId, setClientId] = useState(null);
-  const [fId, setFId] = useState("");
+  const [fId, setFId] = useState([]);
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if(user){
         setIsLoggedIn(true);
-        setClientId(user);
+        setClientId(user.email);
       }else{
         setIsLoggedIn(false);
       }
@@ -21,7 +22,7 @@ function App() {
   },[]);
   return (
   <>
-    {init ? <AppRouter isLoggedIn ={isLoggedIn} clientId = {clientId} setFId = {setFId} fId = {fId}/> : "Initializing..."}
+    {init ? <AppRouter isLoggedIn ={isLoggedIn} clientId = {clientId} fId = {fId} setFId = {setFId} /> : "Initializing..."}
   </>
   );
 }

@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
-import { dbService } from 'fbase';
+import DayCal from "components/DayCallendar";
 import "style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-function Home({clientId, fId}){    
-    const friends = [];
-    const frBts = [];
-    
-    const addFriend = async () => {
-      friends.push(fId);
-      await dbService.collection(clientId.uid).doc("friends").set({
-        friends : fId,
-      });
+function Home({clientId,fId}){    
+    const [friends,setFriends] = useState([]);
+    const [calEm, setCalEm] = useState("");
+    const [evChanged, setEvChanged] = useState(false);
 
-      console.log(friends);
-      //for(let i = 0; i < friends.length; i++){
-        //frBts.push(<button className="friendsBt" key = {`fb ${i}`}></button>);
-      //}
-    }
     useEffect(() => {
-      addFriend();
+      renderFBts();
+      setCalEm(fId[0].Email);
     },[]);
+
+    const renderFBts = () => {
+      for(let i = 0; i < fId.length; i++){
+        setFriends((prev) => [<button id = {fId[i].Email} className ="friendsBt" key = {i} onClick = {fCalChange}></button>, ...prev]);
+      }
+    }
+
+    const fCalChange = (e) => {
+      setCalEm(e.target.id);
+    }
     const history = useHistory();
     return(
         <div>
@@ -30,6 +31,7 @@ function Home({clientId, fId}){
             <div>
               {friends}
             </div>
+            
             <div>
             </div>
             <FontAwesomeIcon onClick={() => {history.push("/profile");}} icon= {faRobot} size="3x" color = "black"/>

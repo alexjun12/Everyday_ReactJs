@@ -1,22 +1,54 @@
 import { authService } from "fbase";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import DayCal from "components/DayCallendar";
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheese } from "@fortawesome/free-solid-svg-icons";
+import { dbService } from 'fbase';
 
 function Profile({clientId, setFId}) {
     const [ModalIsOpen, setModalIsOpen] = useState(false);
+    const [friends, setFriends] = useState([]);
+    const [frChanged, setFrChanged] = useState(false);
     const history = useHistory();
     const onLogOutClick = () => {
         authService.signOut();
         history.push("/");
     }
     const onChange = (event) => {
-        setFId(event.target.value);
+        setFriends(event.target.value);
     }
 
+    const getFriend = async () => {
+        setFriends([]);
+        setFId([]);
+        const dbEvents = await dbService.collection(clientId).get();
+        dbEvents.forEach(document => {
+          if(document.id.substring(0,7) === "friends"){
+            const gotDbFr = {
+                Email : document.data().Email,
+            }
+            setFriends((prev) => [gotDbFr, ...prev]);
+            setFId((prev) => [gotDbFr, ...prev]);
+          }
+        });
+      }
+
+      useEffect(() => {
+        getFriend();
+      },[frChanged]);
+
+    const addFriend = async () => {
+        await dbService.collection(clientId).doc(`friends${new Date().getMilliseconds()}`).set({
+          Email : friends,
+        });
+        if(frChanged === false){
+            setFrChanged(true);
+          }else{
+            setFrChanged(false);
+          }
+    }
     return (
         <div>
             <h1 className="mTitle">EveryDay</h1>
@@ -39,6 +71,7 @@ function Profile({clientId, setFId}) {
             onRequestClose = {() => setModalIsOpen(false)}
             ><form onSubmit={(event) => {
                 event.preventDefault();
+                addFriend();
                 setModalIsOpen(false);
                 alert("Friend Added!!");
             }}>
