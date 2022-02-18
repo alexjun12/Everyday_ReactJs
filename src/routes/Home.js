@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {Link} from "react-router-dom";
+import { dbService } from 'fbase';
 import "style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
@@ -9,8 +9,12 @@ function Home({clientId, fId}){
     const friends = [];
     const frBts = [];
     
-    const addFriend = () => {
+    const addFriend = async () => {
       friends.push(fId);
+      await dbService.collection(clientId.uid).doc("friends").set({
+        friends : fId,
+      });
+
       console.log(friends);
       //for(let i = 0; i < friends.length; i++){
         //frBts.push(<button className="friendsBt" key = {`fb ${i}`}></button>);

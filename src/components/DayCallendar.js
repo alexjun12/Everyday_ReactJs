@@ -32,14 +32,16 @@ function DayCallendar({clientId}){
     addEvent([]);
     const dbEvents = await dbService.collection(clientId.uid).get();
     dbEvents.forEach(document => {
-      const gotDbEv = {
-        id : document.data().id,
-        title : document.data().title,
-        start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
-        end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
-        dbId : document.id,
+        if(document.id.substring(0,5) === "event"){
+        const gotDbEv = {
+          id : document.data().id,
+          title : document.data().title,
+          start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
+          end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
+          dbId : document.id,
+        }
+        addEvent((prev) => [gotDbEv, ...prev]);
       }
-      addEvent((prev) => [gotDbEv, ...prev]);
     });
   };
   useEffect(() => {
@@ -55,7 +57,7 @@ function DayCallendar({clientId}){
         start : startD,
         end: new Date(neD),
       };
-      await dbService.collection(clientId.uid).add(addEvs);
+      await dbService.collection(clientId.uid).doc(`event${nextId}`).set(addEvs);
       setNextId(new Date().getMilliseconds());
       if(evChanged === false){
         setEvChanged(true);
