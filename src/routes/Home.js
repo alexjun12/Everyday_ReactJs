@@ -8,7 +8,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 function Home({clientId,fId}){    
     const [friends,setFriends] = useState([]);
     const [calEm, setCalEm] = useState("");
-    const [evChanged, setEvChanged] = useState(false);
 
     useEffect(() => {
       renderFBts();
