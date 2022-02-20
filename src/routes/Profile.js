@@ -40,6 +40,7 @@ function Profile({clientId, setFId}) {
       },[frChanged]);
 
     const addFriend = async () => {
+      if(friends === dbService.collection){//여기
         await dbService.collection(clientId).doc(`friends${new Date().getMilliseconds()}`).set({
           Email : friends,
         });
@@ -48,6 +49,11 @@ function Profile({clientId, setFId}) {
           }else{
             setFrChanged(false);
           }
+          alert("Friend Added!!");
+      }
+      else{
+        alert("그런친구없음~!0");
+      }
     }
     return (
         <div>
@@ -73,7 +79,6 @@ function Profile({clientId, setFId}) {
                 event.preventDefault();
                 addFriend();
                 setModalIsOpen(false);
-                alert("Friend Added!!");
             }}>
                 <input type = "text" placeholder="Email" required onChange={onChange} />
                 <input type = "submit" value = "Add Friend" />

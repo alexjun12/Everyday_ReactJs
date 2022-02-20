@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DayCal from "components/DayCallendar";
+import FriendCallendar from "components/FriendCallendar";
 import "style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
@@ -8,10 +9,15 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 function Home({clientId,fId}){    
     const [friends,setFriends] = useState([]);
     const [calEm, setCalEm] = useState("");
+    const [fIsTrue, setFIsTrue] = useState(false);
 
     useEffect(() => {
+      if(fId.length > 0){
+        setFIsTrue(true);
+      }else{
+        setFIsTrue(false);
+      }
       renderFBts();
-      setCalEm(fId[0].Email);
     },[]);
 
     const renderFBts = () => {
@@ -23,16 +29,15 @@ function Home({clientId,fId}){
     const fCalChange = (e) => {
       setCalEm(e.target.id);
     }
-    const history = useHistory();
+    const history = useHistory(); 
     return(
         <div>
             <h1 className="mTitle">EveryDay</h1>
             <div>
-              {friends}
+              {fIsTrue ? friends : null}
             </div>
-            
-            <div>
-            </div>
+            {calEm}
+            {fIsTrue ? <FriendCallendar frId = {calEm} /> : <div><h1>찐따</h1></div>}           
             <FontAwesomeIcon onClick={() => {history.push("/profile");}} icon= {faRobot} size="3x" color = "black"/>
         </div>
     );
