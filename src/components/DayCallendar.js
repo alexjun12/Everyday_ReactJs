@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { dbService } from 'fbase';
 import moment, { now } from 'moment';
+import {addDoc, collection} from "firebase/firestore";
 import 'calEdit.css';
 import "react-datepicker/dist/react-datepicker.css";
 import "style.css";
@@ -26,22 +27,17 @@ function DayCallendar({clientId}){
 
   const [evChanged, setEvChanged] = useState(false);
 
-  const [nextId, setNextId] = useState(new Date().getMilliseconds());
-
   const getMyCal = async () => {
     addEvent([]);
-    const dbEvents = await dbService.collection(clientId).get();
+    const dbEvents = await dbService.collection("users").doc(clientId).collection("events").get();
     dbEvents.forEach(document => {
-        if(document.id.substring(0,5) === "event"){
-        const gotDbEv = {
-          id : document.data().id,
-          title : document.data().title,
-          start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
-          end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
-          dbId : document.id,
-        }
-        addEvent((prev) => [gotDbEv, ...prev]);
+      const gotDbEv = {
+        title : document.data().title,
+        start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
+        end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
+        dbId : document.id,
       }
+      addEvent((prev) => [gotDbEv, ...prev]);
     });
   }
   useEffect(() => {
@@ -52,13 +48,11 @@ function DayCallendar({clientId}){
       const cD = moment(endD);
       const neD = cD.clone().add(1,'days');
       const addEvs = {
-        id : nextId,
         title : sctitle,
         start : startD,
         end: new Date(neD),
       };
-      await dbService.collection(clientId).doc(`event${nextId}`).set(addEvs);
-      setNextId(new Date().getMilliseconds());
+      await addDoc(collection(dbService, `users/${clientId}/events/`),addEvs);
       if(evChanged === false){
         setEvChanged(true);
       }else{
@@ -70,14 +64,14 @@ function DayCallendar({clientId}){
     setSctitle(event.target.value);
   }
   const deleteSchedule = async (e) => { 
-    addEvent(events.filter((par) => par.id !== e.id));
-    await dbService.doc(`${clientId}/${e.dbId}`).delete();
+    addEvent(events.filter((par) => par.dbId !== e.dbId));
+    await dbService.doc(`users/${clientId}/events/${e.dbId}`).delete();
     setModalIsOpen(false);
   }
   const editSDay = async (d) => {
     setStartDate(d);
-    addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, start : d} : sched));
-    await dbService.doc(`${clientId}/${selectedEv.dbId}`).update({
+    addEvent(events.map((sched) => sched.dbId === selectedEv.dbId ? {... sched, start : d} : sched));
+    await dbService.doc(`users/${clientId}/events/${selectedEv.dbId}`).update({
       start : d
     });
   }
@@ -85,8 +79,8 @@ function DayCallendar({clientId}){
     const cD = moment(d);
     const neD = cD.clone().add(1,'days');
     setEndDate(new Date(neD));
-    addEvent(events.map((sched) => sched.id === selectedEv.id ? {... sched, end : neD} : sched));
-    await dbService.doc(`${clientId}/${selectedEv.dbId}`).update({
+    addEvent(events.map((sched) => sched.dbId === selectedEv.dbId ? {... sched, end : neD} : sched));
+    await dbService.doc(`users/${clientId}/events/${selectedEv.dbId}`).update({
       end : new Date(neD)
     });
   }

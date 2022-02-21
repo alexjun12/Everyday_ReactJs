@@ -6,55 +6,60 @@ import Modal from 'react-modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheese } from "@fortawesome/free-solid-svg-icons";
 import { dbService } from 'fbase';
+import {addDoc, collection} from "firebase/firestore";
 
 function Profile({clientId, setFId}) {
     const [ModalIsOpen, setModalIsOpen] = useState(false);
+    const [authes, setAuthes] = useState([]);
     const [friends, setFriends] = useState([]);
     const [frChanged, setFrChanged] = useState(false);
-    const history = useHistory();
-    const onLogOutClick = () => {
-        authService.signOut();
-        history.push("/");
-    }
-    const onChange = (event) => {
-        setFriends(event.target.value);
-    }
-
+    const [addOk,setAddOk] = useState(false);
+    
     const getFriend = async () => {
-        setFriends([]);
-        setFId([]);
-        const dbEvents = await dbService.collection(clientId).get();
-        dbEvents.forEach(document => {
-          if(document.id.substring(0,7) === "friends"){
-            const gotDbFr = {
-                Email : document.data().Email,
-            }
-            setFriends((prev) => [gotDbFr, ...prev]);
-            setFId((prev) => [gotDbFr, ...prev]);
-          }
+      setFId([]);
+      const dbEvents = await dbService.collection("users").doc(clientId).collection("friends").get();
+      dbEvents.forEach(document => {
+        const gotDbFr = {
+          Email : document.data().Email,
+        }
+        setFId((prev) => [gotDbFr, ...prev]);
         });
       }
-
       useEffect(() => {
         getFriend();
       },[frChanged]);
 
     const addFriend = async () => {
-      if(friends === dbService.collection){//여기
-        await dbService.collection(clientId).doc(`friends${new Date().getMilliseconds()}`).set({
+      console.log(friends);
+      console.log(dbService.collection("users").doc(friends).id);
+      if(friends === dbService.collection("users").doc(friends).id){
+        setAddOk(true);
+      }
+      if(addOk === true){//여기
+        const fMake = {
           Email : friends,
-        });
+        };
+        await addDoc(collection(dbService, `users/${clientId}/friends/`),fMake);
         if(frChanged === false){
             setFrChanged(true);
           }else{
             setFrChanged(false);
           }
+          setAddOk(false);
           alert("Friend Added!!");
       }
       else{
         alert("그런친구없음~!0");
       }
-    }
+  }
+  const history = useHistory();
+  const onLogOutClick = () => {
+      authService.signOut();
+      history.push("/");
+  }
+  const onChange = (event) => {
+      setFriends(event.target.value);
+  }
     return (
         <div>
             <h1 className="mTitle">EveryDay</h1>

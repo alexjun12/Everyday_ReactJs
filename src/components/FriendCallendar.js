@@ -10,22 +10,18 @@ function FriendCallendar({frId}){
   moment.locale('ko-KR');
   const localizer = momentLocalizer(moment);
   const [events,addEvent] = useState([]);
-  const [evChanged,setEvChanged] = useState(false);
   const [firCh, setFirCh] = useState(false);
   const getMyCal = async () => {
     addEvent([]);
-    const dbEvents = await dbService.collection(frId).get();
+    const dbEvents = await dbService.collection("users").doc(frId).collection("events").get();
     dbEvents.forEach(document => {
-        if(document.id.substring(0,5) === "event"){
         const gotDbEv = {
-          id : document.data().id,
           title : document.data().title,
           start : new Date(parseInt(String(document.data().start.seconds) + "000")).toUTCString(),
           end : new Date(parseInt(String(document.data().end.seconds) + "000")).toUTCString(),
           dbId : document.id,
         }   
         addEvent((prev) => [gotDbEv, ...prev]);
-      }
     });
   }
   useEffect(() => {
