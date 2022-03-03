@@ -37,9 +37,7 @@ function Profile({clientId, setFId}) {
       },[frChanged]);
 
     const addFriend = async () => {
-      console.log(friends);
-      console.log(dbService.collection("users").doc(friends).id);
-      if(friends === dbService.collection("users").doc(friends).id){
+      if(friends === dbService.collection("Authes").doc(friends).id){
         setAddOk(true);
       }
       if(addOk === true){//여기

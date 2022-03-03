@@ -36,8 +36,7 @@ function Home({clientId,fId}){
             <div>
               {fIsTrue ? friends : null}
             </div>
-            {calEm}
-            {fIsTrue ? <FriendCallendar frId = {calEm} /> : <div><h1>찐따</h1></div>}           
+            {fIsTrue ? <FriendCallendar frId = {calEm} /> : <div><h1>친구없음</h1></div>}           
             <FontAwesomeIcon onClick={() => {history.push("/profile");}} icon= {faRobot} size="3x" color = "black"/>
         </div>
     );
