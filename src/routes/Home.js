@@ -19,7 +19,7 @@ function Home({clientId,fId}){
       }
       renderFBts();
     },[]);
-
+//
     const renderFBts = () => {
       for(let i = 0; i < fId.length; i++){
         setFriends((prev) => [<button id = {fId[i].Email} className ="friendsBt" key = {i} onClick = {fCalChange}></button>, ...prev]);
