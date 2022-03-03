@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheese } from "@fortawesome/free-solid-svg-icons";
 import { dbService } from 'fbase';
-import {addDoc, collection} from "firebase/firestore";
+import {addDoc, collection, setDoc, doc} from "firebase/firestore";
 
 function Profile({clientId, setFId}) {
     const [ModalIsOpen, setModalIsOpen] = useState(false);
@@ -15,6 +15,12 @@ function Profile({clientId, setFId}) {
     const [frChanged, setFrChanged] = useState(false);
     const [addOk,setAddOk] = useState(false);
     
+    const addAuthes = async () => {
+      const addAuth = {
+        Email : clientId,
+      };
+      await setDoc(doc(dbService, "Authes", clientId),addAuth);
+    }
     const getFriend = async () => {
       setFId([]);
       const dbEvents = await dbService.collection("users").doc(clientId).collection("friends").get();
@@ -26,6 +32,7 @@ function Profile({clientId, setFId}) {
         });
       }
       useEffect(() => {
+        addAuthes();
         getFriend();
       },[frChanged]);
 

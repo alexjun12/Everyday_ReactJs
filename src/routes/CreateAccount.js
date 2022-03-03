@@ -1,6 +1,5 @@
 import { authService, firebaseInstance, dbService } from "fbase";
 import React, { useState } from "react";
-import {addDoc, collection} from "firebase/firestore";
 
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import "style.css";
@@ -37,6 +36,7 @@ function CreateAccount() {
         }
         await authService.signInWithPopup(provider);
     }
+    
     const history = useHistory();
     authService.onAuthStateChanged((user) => {
         if(user){
