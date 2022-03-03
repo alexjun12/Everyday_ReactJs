@@ -15,8 +15,7 @@ function App() {
     const addAuth = {
       Email : clientId,
     };
-    
-    await setDoc(doc(dbService, "Authes/",clientId.toString()),addAuth);
+    await setDoc(doc(dbService, "Authes", clientId),addAuth);
   }
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -28,6 +27,7 @@ function App() {
       }
       setInit(true);
     });
+    console.log(clientId);
     addAuthes();
   },[]);
   return (
