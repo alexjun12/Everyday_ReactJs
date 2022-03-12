@@ -7,7 +7,6 @@ import "style.css";
 function CreateAccount() {
     const [email,setEmail] = useState(""); 
     const [password,setPassword] = useState(""); 
-    const [newAccount, setNewAccount] = useState(true);
 
     const onChange = (event) => {
         const {target: {name,value}} = event;
