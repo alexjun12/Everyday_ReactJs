@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { dbService } from 'fbase';
-import moment, { now } from 'moment';
+import moment from 'moment';
 import {addDoc, collection} from "firebase/firestore";
 import 'calEdit.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -109,13 +109,15 @@ function DayCallendar({clientId}){
     <Modal 
       style = {{
         overlay : {
-        backgroundColor : "rgba(0,0,0,0.3)",
+        backgroundColor : "rgba(0,0,0,0.5)",
         zIndex : 4,
       },
         content : {
-        height : 300,
+        height : 50,
         width : 300,
-        left : 1100,
+        top: 200,
+        left : 670,
+        borderRadius: 30,
       }     
     }}
     isOpen = {ModalIsOpen}

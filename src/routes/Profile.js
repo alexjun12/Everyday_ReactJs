@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import DayCal from "components/DayCallendar";
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheese } from "@fortawesome/free-solid-svg-icons";
+import { faAddressBook, faUserPlus, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import { dbService } from 'fbase';
 import {addDoc, collection, setDoc, doc} from "firebase/firestore";
 
@@ -69,11 +69,11 @@ function Profile({clientId, setFId}) {
         <div>
             <h1 className="mTitle">EveryDay</h1>
             <div>
-                <button className="pageChangeBt" onClick={() => {history.push("/");}}>Friend's</button>
-                <button className="addFriendBt" onClick={() => setModalIsOpen(true)}>AddFriend</button>
+            <FontAwesomeIcon className="pageChangeBt" onClick={() => {history.push("/");}} icon= {faAddressBook} size="3x" color = "white"/>
+            <FontAwesomeIcon className="restBt" onClick={() => setModalIsOpen(true)} icon= {faUserPlus} size="3x" color = "white"/>
+            <FontAwesomeIcon className="restBt" onClick={onLogOutClick} icon= {faRightFromBracket} size="3x" color = "white"/>
             </div>
             <DayCal clientId = {clientId}/>
-            <button className="logoutBt" onClick={onLogOutClick}>Log Out</button>
             <Modal 
                 style = {{
                 overlay : {
