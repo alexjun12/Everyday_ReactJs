@@ -33,11 +33,11 @@ function Home({clientId,fId}){
     return(
         <div>
             <h1 className="mTitle">EveryDay</h1>
+            <FontAwesomeIcon className="pageChangeBt" onClick={() => {history.push("/profile");}} icon= {faRobot} size="3x" color = "white"/>
             <div>
               {fIsTrue ? friends : null}
             </div>
-            {fIsTrue ? <FriendCallendar frId = {calEm} /> : <div><h1>친구없음</h1></div>}           
-            <FontAwesomeIcon onClick={() => {history.push("/profile");}} icon= {faRobot} size="3x" color = "black"/>
+            {fIsTrue ? <FriendCallendar frId = {calEm} /> : <div className="noFriendText"><h1>친구없음</h1></div>}           
         </div>
     );
 }

@@ -29,9 +29,10 @@
 }
 
 .mTitle{  
-    text-align: left;
+    text-align: center;
     font-family: 'Dongle',serif;
     font-size: 100px;
+    color: white;
 }
 .textCenter{
     text-align: center;
@@ -39,9 +40,7 @@
 }
 
 .confirmBT{
-  position: relative;
-  left: 1100px;
-  top: 10px;
+  margin-left: 1100px;
   height: 50px;
   width: 100px;
   background-color: black;
@@ -51,9 +50,8 @@
 }
 
 .googleBt{
-  position: relative;
-  top: 120px;
-  left: 780px;
+  margin-top: 100px;
+  margin-left: 750px;
   height: 50px;
   width: 50px;
   background: url("/public/google.png") no-repeat;
@@ -61,9 +59,8 @@
   border: 0;
 }
 .githubBt{
-  position: relative;
-  top: 120px;
-  left: 810px;
+  margin-top: 100px;
+  margin-left: 100px;
   height: 50px;
   width: 50px;
   background: url("/public/github.png") no-repeat;
@@ -163,4 +160,30 @@
     border-radius: 1%;
     left : 200px;
     background-color: white;
+  }
+
+  .noFriendText{
+    color: rgb(255, 0, 0);
+    text-align: center;
+    font-family: 'Dongle',serif;
+    margin-top: 100px;
+  }
+
+  .pageChangeBt{
+    width: 74px;
+    margin-left: 1600px;
+    font-family: 'Dongle',serif;
+    font-size: 22px;
+  }
+
+  .logoutBt{
+    margin-left: 1600px;
+    font-family: 'Dongle',serif;
+    font-size: 20px;
+  }
+
+  .addFriendBt{
+    margin-left: 1600px;
+    font-family: 'Dongle',serif;
+    font-size: 20px;
   }

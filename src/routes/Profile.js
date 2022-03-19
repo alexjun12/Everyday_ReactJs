@@ -68,9 +68,12 @@ function Profile({clientId, setFId}) {
     return (
         <div>
             <h1 className="mTitle">EveryDay</h1>
+            <div>
+                <button className="pageChangeBt" onClick={() => {history.push("/");}}>Friend's</button>
+                <button className="addFriendBt" onClick={() => setModalIsOpen(true)}>AddFriend</button>
+            </div>
             <DayCal clientId = {clientId}/>
-            <button onClick={onLogOutClick}>Log Out</button>
-            <button onClick={() => setModalIsOpen(true)}>Add Friend</button>
+            <button className="logoutBt" onClick={onLogOutClick}>Log Out</button>
             <Modal 
                 style = {{
                 overlay : {
@@ -94,9 +97,7 @@ function Profile({clientId, setFId}) {
                 <input type = "submit" value = "Add Friend" />
             </form>
             </Modal>
-            <div>
-                <FontAwesomeIcon onClick={() => {history.push("/");}} icon= {faCheese} size="3x" color = "black"/>
-            </div>
+            
         </div>
     );
 }
