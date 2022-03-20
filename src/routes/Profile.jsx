@@ -54,7 +54,7 @@ function Profile({clientId, setFId}) {
           alert("Friend Added!!");
       }
       else{
-        alert("그런친구없음~!0");
+        alert("No Id like that~!");
       }
   }
   const history = useHistory();
@@ -67,12 +67,12 @@ function Profile({clientId, setFId}) {
   }
     return (
         <div>
-            <h1 className="mTitle">EveryDay</h1>
             <div>
-            <FontAwesomeIcon className="pageChangeBt" onClick={() => {history.push("/");}} icon= {faAddressBook} size="3x" color = "white"/>
-            <FontAwesomeIcon className="restBt" onClick={() => setModalIsOpen(true)} icon= {faUserPlus} size="3x" color = "white"/>
-            <FontAwesomeIcon className="restBt" onClick={onLogOutClick} icon= {faRightFromBracket} size="3x" color = "white"/>
+              <FontAwesomeIcon className="pageChangeBt" onClick={() => {history.push("/");}} icon= {faAddressBook} size="3x" color = "white"/>
+              <FontAwesomeIcon className="restBt" onClick={() => setModalIsOpen(true)} icon= {faUserPlus} size="3x" color = "white"/>
+              <FontAwesomeIcon className="restBt" onClick={onLogOutClick} icon= {faRightFromBracket} size="3x" color = "white"/>
             </div>
+            <h1 className="mTitle">EveryDay</h1>
             <DayCal clientId = {clientId}/>
             <Modal 
                 style = {{
@@ -80,10 +80,12 @@ function Profile({clientId, setFId}) {
                 backgroundColor : "rgba(0,0,0,0.3)",
                 zIndex : 4,
             },
-                content : {
-                height : 300,
-                width : 300,
-                left : 1100,
+            content : {
+              height : 50,
+              width : 300,
+              top: 200,
+              left : 670,
+              borderRadius: 30,
             }     
             }}
             isOpen = {ModalIsOpen}

@@ -170,11 +170,15 @@
   }
 
   .pageChangeBt{
-    margin-left: 1250px;
+    margin-left: 1400px;
     margin-bottom: 20px;
   }
 
   .restBt{
     margin-left: 40px;
     margin-bottom: 20px;
+  }
+
+  .goProfileBt {
+    margin-left: 1500px;
   }

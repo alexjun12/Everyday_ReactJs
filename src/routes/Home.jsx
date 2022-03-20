@@ -3,7 +3,7 @@ import DayCal from "components/DayCallendar";
 import FriendCallendar from "components/FriendCallendar";
 import "style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRobot } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function Home({clientId,fId}){    
@@ -32,8 +32,8 @@ function Home({clientId,fId}){
     const history = useHistory(); 
     return(
         <div>
+            <FontAwesomeIcon className="goProfileBt" onClick={() => {history.push("/profile");}} icon= {faUser} size="3x" color = "white"/>
             <h1 className="mTitle">EveryDay</h1>
-            <FontAwesomeIcon className="pageChangeBt" onClick={() => {history.push("/profile");}} icon= {faRobot} size="3x" color = "white"/>
             <div>
               {fIsTrue ? friends : null}
             </div>
