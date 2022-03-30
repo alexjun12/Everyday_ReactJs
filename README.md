@@ -13,7 +13,7 @@ This app is made for students to share schedules with their friends
 * react-date-picker
 * react-modal
 * FontAwsomeIcon
-* 
+
 ### data
 * Firebase firestore
 * Firebase Authentication
